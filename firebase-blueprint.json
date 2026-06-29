@@ -1,0 +1,114 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile data including email and creation date.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Portfolio": {
+      "title": "User Portfolio",
+      "description": "The cash balance and holdings for the user.",
+      "type": "object",
+      "properties": {
+        "cash": { "type": "number" },
+        "holdings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "symbol": { "type": "string" },
+              "shares": { "type": "number" },
+              "avgBuyPrice": { "type": "number" }
+            },
+            "required": ["symbol", "shares", "avgBuyPrice"]
+          }
+        },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["cash", "holdings"]
+    },
+    "Trade": {
+      "title": "Trade Transaction",
+      "description": "A ledger of executed stock transactions.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "symbol": { "type": "string" },
+        "shares": { "type": "number" },
+        "price": { "type": "number" },
+        "type": { "type": "string", "enum": ["BUY", "SELL"] },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "symbol", "shares", "price", "type", "timestamp"]
+    },
+    "PriceAlert": {
+      "title": "Price Alert",
+      "description": "Custom alerts set by the user for stock symbols.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "symbol": { "type": "string" },
+        "price": { "type": "number" },
+        "type": { "type": "string", "enum": ["above", "below"] },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "symbol", "price", "type", "active", "createdAt"]
+    },
+    "SupportTicket": {
+      "title": "Support Ticket",
+      "description": "A ticket logged by the user for help & support.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string", "enum": ["Technical", "Account", "Billing", "Feedback"] },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High"] },
+        "status": { "type": "string", "enum": ["Open", "In Progress", "Resolved"] },
+        "createdAt": { "type": "string" },
+        "terminalStatus": {
+          "type": "object",
+          "properties": {
+            "connectionState": { "type": "string", "enum": ["CONNECTED", "DISCONNECTED"] },
+            "activeTab": { "type": "string" },
+            "totalTrades": { "type": "number" },
+            "cash": { "type": "number" },
+            "portfolioItems": { "type": "number" }
+          },
+          "required": ["connectionState", "activeTab", "totalTrades", "cash", "portfolioItems"]
+        }
+      },
+      "required": ["id", "title", "description", "category", "priority", "status", "createdAt", "terminalStatus"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Root collection for users."
+    },
+    "users/{userId}/portfolio/main": {
+      "schema": "Portfolio",
+      "description": "A document storing the user's cash and portfolio holdings."
+    },
+    "users/{userId}/trades/{tradeId}": {
+      "schema": "Trade",
+      "description": "A subcollection for the user's trade history."
+    },
+    "users/{userId}/alerts/{alertId}": {
+      "schema": "PriceAlert",
+      "description": "A subcollection for the user's custom price alerts."
+    },
+    "users/{userId}/tickets/{ticketId}": {
+      "schema": "SupportTicket",
+      "description": "A subcollection for the user's support tickets."
+    }
+  }
+}

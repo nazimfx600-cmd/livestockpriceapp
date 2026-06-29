@@ -1,0 +1,6 @@
+{
+  "name": "Live Stock Price App",
+  "description": "A real-time live stock price tracker with interactive charts, local portfolio simulator, JSON payload viewer, and AI stock sentiment analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
